@@ -5,27 +5,27 @@ const User = require('../../../models/user/User');
 
 module.exports = (req, res) => {
   if (!req.body || !req.body.name || !req.body.phone || !req.body.gender || !req.body.birth_year) {
-    req.session.error = res.__('Lütfen bütün bilgileri girin');
+    req.session.error = 'Lütfen bütün bilgileri girin';
     return res.redirect('/auth/complete');
   }
 
   if (!validator.isMobilePhone(req.body.phone.trim())) {
-    req.session.error = res.__('Lütfen geçerli bir telefon numarası girin');
+    req.session.error = 'Lütfen geçerli bir telefon numarası girin';
     return res.redirect('/auth/complete');
   }
 
   if (!validator.isNumeric(req.body.birth_year.trim(), { no_symbols: true })) {
-    req.session.error = res.__('Lütfen doğduğunuz yılı girin');
+    req.session.error = 'Lütfen doğduğunuz yılı girin';
     return res.redirect('/auth/complete');
   }
 
   if (parseInt(req.body.birth_year) < 1920 || parseInt(req.body.birth_year) > 2020) {
-    req.session.error = res.__('Lütfen doğduğunuz yılı girin');
+    req.session.error = 'Lütfen doğduğunuz yılı girin';
     return res.redirect('/auth/complete');
   }
 
   if (!['erkek', 'kadın'].includes(req.body.gender.toLowerCase().trim())) {
-    req.session.error = res.__('Lütfen cinsiyetinizi Kadın ya da Erkek olarak belirtin');
+    req.session.error = 'Lütfen cinsiyetinizi Kadın ya da Erkek olarak belirtin';
     return res.redirect('/auth/complete');
   }
 
@@ -37,12 +37,12 @@ module.exports = (req, res) => {
     completed: true
   }}, {new: true}, (err, user) => {
     if (err && err.code == 11000) {
-      req.session.error = res.__('Bu telefon numarası zaten kayıtlı, lütfen başka bir numara deneyin');
+      req.session.error = 'Bu telefon numarası zaten kayıtlı, lütfen başka bir numara deneyin';
       return res.redirect('/auth/complete');
     }
 
     if (err || !user) {
-      req.session.error = res.__('Bilinmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin');
+      req.session.error = 'Bilinmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin';
       return res.redirect('/auth/complete');
     }
 
